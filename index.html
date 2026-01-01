@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Listee - Sell 5x Faster on Vinted</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600&display=swap" rel="stylesheet">
+
     <style>
         :root {
             --primary: #09B1BA; /* Listee Teal */
@@ -27,10 +31,27 @@
         .btn-outline:hover { border-color: var(--dark); }
 
         /* Navigation */
-        nav { padding: 20px 0; position: sticky; top: 0; background: rgba(255,255,255,0.9); backdrop-filter: blur(10px); z-index: 100; border-bottom: 1px solid #f0f0f0; }
+        nav { padding: 15px 0; position: sticky; top: 0; background: rgba(255,255,255,0.9); backdrop-filter: blur(10px); z-index: 100; border-bottom: 1px solid #f0f0f0; }
         .nav-content { display: flex; justify-content: space-between; align-items: center; }
-        .logo { font-size: 1.5rem; font-weight: 800; color: var(--primary); letter-spacing: -0.5px; text-decoration: none; }
-        .logo span { color: var(--dark); }
+        
+        /* UPDATED LOGO STYLES */
+        .logo { 
+            display: flex; 
+            align-items: center; 
+            text-decoration: none; 
+        }
+        .logo-img {
+            height: 35px; /* Adjusts height to fit navbar nicely */
+            width: auto;
+            margin-right: 8px;
+        }
+        .logo-text {
+            font-family: 'Fredoka', sans-serif;
+            font-weight: 600;
+            font-size: 1.6rem;
+            color: var(--primary);
+            letter-spacing: -0.5px;
+        }
 
         /* Hero Section */
         .hero { padding: 80px 0 60px; text-align: center; }
@@ -99,7 +120,11 @@
 
     <nav>
         <div class="container nav-content">
-            <a href="#" class="logo">Listee<span>.</span></a>
+            <a href="#" class="logo">
+                <img src="logo.png" alt="Listee Logo" class="logo-img">
+                <span class="logo-text">Listee.</span>
+            </a>
+            
             <a href="#" class="btn btn-primary" style="padding: 8px 20px; font-size: 0.9rem;">Get Extension</a>
         </div>
     </nav>
