@@ -8,57 +8,84 @@
         body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; line-height: 1.6; color: #333; max-width: 800px; margin: 0 auto; padding: 20px; }
         h1 { color: #0077B5; } /* Vinted-ish Blue */
         h2 { border-bottom: 2px solid #f0f0f0; padding-bottom: 10px; margin-top: 30px; }
+        h3 { color: #444; margin-top: 25px; }
         .highlight { background-color: #e6f7ff; padding: 15px; border-radius: 5px; border-left: 5px solid #0077B5; }
+        .warning { background-color: #fff3cd; padding: 15px; border-radius: 5px; border-left: 5px solid #ffc107; margin-top: 20px; }
+        ul { margin-bottom: 20px; }
+        li { margin-bottom: 10px; }
         footer { margin-top: 50px; font-size: 0.9em; color: #666; border-top: 1px solid #ddd; padding-top: 20px; }
+        a { color: #0077B5; text-decoration: none; }
+        a:hover { text-decoration: underline; }
     </style>
 </head>
 <body>
 
     <h1>Privacy Policy for Listee</h1>
-    <p><strong>Last Updated:</strong> December 30, 2025</p>
+    <p><strong>Last Updated:</strong> January 10, 2026</p>
 
     <div class="highlight">
         <h3>🚀 The Short Version</h3>
-        <p><strong>Listee is a "local-only" tool.</strong> We do not have a database. We do not see your Vinted password, your messages, or your items. All automation happens directly on your computer browser.</p>
+        <p><strong>Listee operates with a "Privacy-First" approach.</strong></p>
+        <ul>
+            <li><strong>Your Listing Data:</strong> All automation (scraping, copying, pasting) happens locally on your browser. We do not see or store your Vinted passwords, messages, or inventory.</li>
+            <li><strong>Your Account Data:</strong> We store only your Name, Email, and License Status securely in the cloud to verify your subscription.</li>
+            <li><strong>Your Payments:</strong> Processed 100% by Stripe. We never see or store your credit card numbers.</li>
+        </ul>
     </div>
 
     <h2>1. Introduction</h2>
-    <p>The "Listee" Chrome Extension ("we", "our", or "us") is committed to protecting your privacy. This Privacy Policy explains how we handle your data in compliance with the General Data Protection Regulation (GDPR) and UK Data Protection Act.</p>
+    <p>The "Listee" Chrome Extension ("we", "our", or "us") is committed to protecting your privacy. This Privacy Policy explains how we handle your data in compliance with the General Data Protection Regulation (GDPR), UK Data Protection Act, and Google Chrome Web Store policies.</p>
 
-    <h2>2. Data We Collect (and Don't Collect)</h2>
-    
-    <h3>2.1 Personal Data</h3>
-    <p>We <strong>do not</strong> transmit, store, or sell your personal data. We do not have a backend server. We cannot see:</p>
+    <h2>2. Data We Collect & Store</h2>
+
+    <h3>2.1 Account Information (Cloud Storage)</h3>
+    <p>To manage your subscription and license, we use <strong>Google Authentication</strong> and <strong>Firebase</strong>. We collect and securely store:</p>
     <ul>
-        <li>Your login credentials (passwords).</li>
-        <li>Your payment information.</li>
-        <li>Your personal messages.</li>
+        <li><strong>Email Address & Name:</strong> Provided via Google Sign-In to create your user profile.</li>
+        <li><strong>User ID:</strong> A unique identifier to link your account to your payment status.</li>
+        <li><strong>License Status:</strong> Whether your subscription is "Active," "Trialing," or "Expired."</li>
     </ul>
 
-    <h3>2.2 Usage Data (Website Content)</h3>
-    <p>The extension temporarily accesses specific content on the web pages you visit (specifically, Vinted item pages) solely for the purpose of executing the "Copy" and "Paste" automation commands. This data (titles, descriptions, photos) is stored temporarily in your browser's local memory (`chrome.storage.local`) and is overwritten or deleted immediately after the task is complete.</p>
+    <h3>2.2 Payment Information (Stripe)</h3>
+    <p>All payments are processed securely by <strong>Stripe</strong>, a third-party payment processor. <strong>Listee does not store or have access to your credit card numbers or bank account details.</strong> We only receive a confirmation ("Paid" or "Unpaid") to unlock the extension's features.</p>
+
+    <h3>2.3 Automation Data (Local Storage Only)</h3>
+    <p>To perform the relisting automation, the extension temporarily accesses content from the specific Vinted web pages you visit. This includes:</p>
+    <ul>
+        <li>Item Titles and Descriptions</li>
+        <li>Item Photos (temporarily processed to ensure uniqueness)</li>
+    </ul>
+    <p><strong>This data is stored locally</strong> in your browser's memory (`chrome.storage.local`) solely for the purpose of transferring it from the "Old Item" tab to the "New Item" form. It is <strong>not</strong> sent to our servers and is deleted or overwritten immediately after use.</p>
 
     <h2>3. Permissions Explained</h2>
-    <p>We require specific browser permissions to function. Here is why:</p>
+    <p>We require specific browser permissions to function. Here is exactly why we need them:</p>
     <ul>
-        <li><strong>activeTab / Scripting:</strong> Required to read the text on your "Old Item" page and paste it into the "New Item" form.</li>
-        <li><strong>Storage:</strong> Required to hold that text in your computer's memory for the few seconds between the "Copy" and "Paste" actions.</li>
+        <li><strong>identity:</strong> Required to securely log you in via your Google Account and verify your Pro license status.</li>
+        <li><strong>activeTab / scripting:</strong> Required to "read" the details of the item you are relisting and "write" them into the new form.</li>
+        <li><strong>storage / unlimitedStorage:</strong> Required to temporarily hold the high-resolution images of your items while transferring them between tabs.</li>
     </ul>
 
     <h2>4. Third-Party Services</h2>
-    <p>The extension is hosted on the <strong>Google Chrome Web Store</strong>. Google may collect aggregated, anonymous technical data (e.g., number of installs, crash reports) subject to <a href="https://policies.google.com/privacy" target="_blank">Google's Privacy Policy</a>.</p>
+    <p>We rely on trusted third-party services to operate securely:</p>
+    <ul>
+        <li><strong>Google Firebase:</strong> Used for secure authentication and database storage of license status. (<a href="https://firebase.google.com/support/privacy" target="_blank">Privacy Policy</a>)</li>
+        <li><strong>Stripe:</strong> Used for all payment processing. (<a href="https://stripe.com/privacy" target="_blank">Privacy Policy</a>)</li>
+    </ul>
 
-    <h2>5. Your Rights (GDPR)</h2>
-    <p>Under the GDPR, you have rights regarding your data. However, since Listee does not collect or store your personal data on our servers, we hold no data to provide, correct, or delete.</p>
-    <p>If you wish to clear all data associated with the extension, simply <strong>uninstall the extension</strong> from your browser. This immediately removes all locally stored temporary data.</p>
+    <h2>5. Data Security</h2>
+    <p>We use industry-standard encryption (HTTPS/TLS) for all communication between the extension and our cloud services (Firebase/Stripe). Your authentication tokens are handled securely via Chrome's native Identity API.</p>
 
-    <h2>6. Contact Us</h2>
+    <h2>6. Your Rights (GDPR)</h2>
+    <p>You have the right to request access to, correction of, or deletion of your personal data stored in our database (Email/License status). To exercise these rights, or to delete your account entirely, please contact us at the email below.</p>
+    <p><em>Note: Uninstalling the extension will immediately remove all local automation data from your browser.</em></p>
+
+    <h2>7. Contact Us</h2>
     <p>If you have questions about this policy or the tool, please contact us at:</p>
     <p><strong>Email:</strong> <a href="mailto:support@uselistee.com">support@uselistee.com</a></p>
 
     <footer>
-        <p>&copy; 2025 Listee Team. All rights reserved.</p>
-        <p><em>Listee is an independent tool and is not affiliated with, endorsed by, or connected to Vinted.</em></p>
+        <p>&copy; 2026 Listee Team. All rights reserved.</p>
+        <p><em>Listee is an independent automation tool and is not affiliated with, endorsed by, or connected to Vinted.</em></p>
     </footer>
 
 </body>
