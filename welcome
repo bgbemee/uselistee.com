@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Let's Get Started - Listee</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <style>
+        :root {
+            --primary: #09B1BA;
+            --primary-hover: #079aa3;
+            --dark: #1a1a1a;
+            --gray: #6b7280;
+            --light: #f3f4f6;
+            --white: #ffffff;
+            --radius: 12px;
+            --success: #10b981;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; color: var(--dark); line-height: 1.6; background-color: var(--light); }
+        
+        .container { max-width: 800px; margin: 0 auto; padding: 0 20px; }
+        
+        /* Navbar */
+        nav { padding: 20px 0; background: var(--white); border-bottom: 1px solid #e5e7eb; margin-bottom: 40px; }
+        .logo { display: flex; align-items: center; justify-content: center; text-decoration: none; }
+        .logo-img { height: 35px; width: auto; margin-right: 8px; }
+        .logo-text { font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 1.6rem; color: var(--primary); letter-spacing: -0.5px; }
+
+        /* Main Card */
+        .onboarding-card {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            text-align: center;
+            margin-bottom: 50px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        h1 { font-size: 2rem; margin-bottom: 10px; color: var(--dark); }
+        .subtitle { color: var(--gray); margin-bottom: 30px; font-size: 1.1rem; }
+
+        /* Step 1: The Pin Reminder */
+        .pin-instruction {
+            background: #eefbfc;
+            border: 2px dashed var(--primary);
+            border-radius: var(--radius);
+            padding: 20px;
+            margin-bottom: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+        .pin-icon { font-size: 1.5rem; }
+
+        /* The Quiz Styles */
+        .quiz-container { display: none; }
+        .quiz-step { display: none; animation: fadeIn 0.4s ease; }
+        .quiz-step.active { display: block; }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        .quiz-option {
+            padding: 20px;
+            border: 2px solid #e5e7eb;
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: all 0.2s;
+            background: var(--white);
+            font-weight: 500;
+        }
+
+        .quiz-option:hover {
+            border-color: var(--primary);
+            background: #eefbfc;
+            transform: translateY(-3px);
+        }
+
+        /* Progress Bar */
+        .progress-wrapper {
+            height: 6px;
+            background: #e5e7eb;
+            border-radius: 10px;
+            margin: 0 auto 30px;
+            max-width: 200px;
+            overflow: hidden;
+        }
+        .progress-bar {
+            height: 100%;
+            background: var(--primary);
+            width: 33%;
+            transition: width 0.3s ease;
+        }
+
+        /* Final Success Screen */
+        .success-screen { display: none; animation: fadeIn 0.5s ease; }
+        
+        .app-preview-img {
+            max-width: 280px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(9, 177, 186, 0.2);
+            margin: 25px 0;
+            border: 4px solid var(--white);
+        }
+
+        /* SAFETY BOX STYLES */
+        .safety-box {
+            background: #fff8e6;
+            border-left: 4px solid #f59e0b;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: left;
+            margin: 0 auto 30px auto;
+            max-width: 550px;
+            font-size: 0.95rem;
+            color: #78350f;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+        .safety-icon { font-size: 1.2rem; }
+        
+        .action-box {
+            background: var(--dark);
+            color: white;
+            padding: 30px;
+            border-radius: var(--radius);
+            margin-top: 20px;
+        }
+
+        .btn-primary {
+            display: inline-block;
+            background: var(--primary);
+            color: var(--white);
+            padding: 15px 40px;
+            border-radius: 50px;
+            font-weight: 700;
+            text-decoration: none;
+            font-size: 1.1rem;
+            transition: all 0.2s;
+            margin-top: 20px;
+            border: none;
+            cursor: pointer;
+        }
+        .btn-primary:hover { background: var(--primary-hover); transform: scale(1.05); }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="container">
+            <a href="#" class="logo">
+                <img src="logo.png" alt="Listee Logo" class="logo-img">
+                <span class="logo-text">Listee.</span>
+            </a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="onboarding-card">
+            
+            <div id="intro-section">
+                <h1>Listee is installed! 🚀</h1>
+                <p class="subtitle">Let's set up your personal selling strategy.</p>
+
+                <div class="pin-instruction">
+                    <span class="pin-icon">🧩</span>
+                    <div>
+                        <strong>Crucial Step:</strong> Click the "Puzzle" icon in Chrome and <strong>Pin Listee</strong> so you don't lose it.
+                    </div>
+                </div>
+
+                <button class="btn-primary" onclick="startQuiz()">Personalize My Experience</button>
+            </div>
+
+            <div id="quiz-section" class="quiz-container">
+                <div class="progress-wrapper">
+                    <div class="progress-bar" id="progress"></div>
+                </div>
+
+                <div class="quiz-step active" id="q1">
+                    <h2>How many unsold items do you have?</h2>
+                    <div class="options-grid">
+                        <div class="quiz-option" onclick="nextStep(2)">1 - 10 Items</div>
+                        <div class="quiz-option" onclick="nextStep(2)">10 - 50 Items</div>
+                        <div class="quiz-option" onclick="nextStep(2)">50+ (Reseller)</div>
+                    </div>
+                </div>
+
+                <div class="quiz-step" id="q2">
+                    <h2>Did you know Vinted hides items after 3 days?</h2>
+                    <div class="options-grid">
+                        <div class="quiz-option" onclick="nextStep(3)">Yes, that's why I'm here!</div>
+                        <div class="quiz-option" onclick="nextStep(3)">No, really? 🤯</div>
+                    </div>
+                </div>
+
+                <div class="quiz-step" id="q3">
+                    <h2>What is your main goal?</h2>
+                    <div class="options-grid">
+                        <div class="quiz-option" onclick="showResult()">Clear my closet</div>
+                        <div class="quiz-option" onclick="showResult()">Make extra cash</div>
+                        <div class="quiz-option" onclick="showResult()">Boost my business</div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="result-section" class="success-screen">
+                <h2>Your Strategy is Ready ⚡</h2>
+                <p class="subtitle">Based on your answers, we recommend <strong>Relisting 5 items today</strong> to trigger the algorithm.</p>
+                
+                <div class="safety-box">
+                    <div class="safety-icon">🛡️</div>
+                    <div>
+                        <strong>Smart Protection Active:</strong><br>
+                        Listee automatically <strong>deletes your old item</strong> before creating the new one. This ensures you never get flagged for "Duplicate Listings."
+                    </div>
+                </div>
+
+                <img src="app-preview.jpg" alt="Listee Interface" class="app-preview-img">
+                
+                <p style="max-width: 500px; margin: 0 auto 20px auto; color: var(--gray);">
+                    <strong>How to start:</strong> Open any of your old items on Vinted. Look for the teal <strong>Listee Panel</strong> (shown above) and click <strong>"Relist Item"</strong>.
+                </p>
+
+                <div class="action-box">
+                    <h3>Ready to sell?</h3>
+                    <p style="color: #ccc; margin-bottom: 0;">It's time to wake up your wardrobe.</p>
+                    <a href="https://www.vinted.co.uk" target="_blank" class="btn-primary" style="background: white; color: var(--dark);">Open Vinted & Start</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        function startQuiz() {
+            document.getElementById('intro-section').style.display = 'none';
+            document.getElementById('quiz-section').style.display = 'block';
+        }
+
+        function nextStep(stepNumber) {
+            // Hide all steps
+            document.querySelectorAll('.quiz-step').forEach(el => el.classList.remove('active'));
+            
+            // Show current step
+            document.getElementById('q' + stepNumber).classList.add('active');
+            
+            // Update Progress Bar
+            let width = '33%';
+            if(stepNumber === 2) width = '66%';
+            if(stepNumber === 3) width = '100%';
+            document.getElementById('progress').style.width = width;
+        }
+
+        function showResult() {
+            document.getElementById('quiz-section').style.display = 'none';
+            document.getElementById('result-section').style.display = 'block';
+            
+            // TRIGGER CONFETTI 🎉
+            var duration = 3 * 1000;
+            var animationEnd = Date.now() + duration;
+            var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+
+            function randomInRange(min, max) {
+              return Math.random() * (max - min) + min;
+            }
+
+            var interval = setInterval(function() {
+              var timeLeft = animationEnd - Date.now();
+
+              if (timeLeft <= 0) {
+                return clearInterval(interval);
+              }
+
+              var particleCount = 50 * (timeLeft / duration);
+              // since particles fall down, start a bit higher than random
+              confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } }));
+              confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } }));
+            }, 250);
+        }
+    </script>
+</body>
+</html>
