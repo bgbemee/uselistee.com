@@ -176,6 +176,19 @@
         }
         .btn-primary:hover { background: var(--primary-hover); transform: scale(1.05); }
 
+        /* The Skip Link */
+        .skip-link {
+            display: inline-block;
+            margin-top: 15px;
+            color: var(--gray);
+            font-size: 0.9rem;
+            text-decoration: underline;
+            cursor: pointer;
+            border: none;
+            background: none;
+        }
+        .skip-link:hover { color: var(--dark); }
+
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
@@ -244,23 +257,25 @@
 
             <div id="email-section" class="email-gate">
                 <h2>🎉 One Last Step!</h2>
-                <p class="subtitle">Enter your email to unlock your <strong>5 Free Relists</strong>.</p>
+                <p class="subtitle">Want to save money and stay updated?</p>
                 
                 <div style="background: #eefbfc; padding: 15px; border-radius: 10px; margin-bottom: 20px; border: 1px dashed var(--primary);">
                     <span style="font-size: 1.2rem;">🎁</span>
-                    <strong style="color: var(--primary);">Bonus:</strong> We will also send you a secret <strong>50% OFF Lifetime</strong> code.
+                    <strong style="color: var(--primary);">Optional Bonus:</strong> Enter your email below to receive a <strong>50% OFF Lifetime</strong> code and important updates about new features.
                 </div>
                 
                 <input type="email" id="userEmail" class="email-input" placeholder="name@example.com">
                 <br>
-                <button class="btn-primary" onclick="submitEmail()">Unlock My Credits & Discount</button>
-                <p style="font-size: 0.8rem; color: #999; margin-top: 15px;">We hate spam as much as you do.</p>
+                <button class="btn-primary" onclick="submitEmail()">Send Me The Discount</button>
+                <br>
+                
+                <button class="skip-link" onclick="skipEmail()">No thanks, I'll pay full price</button>
             </div>
 
             <div id="result-section" class="success-screen">
                 <h2>You are all set! ⚡</h2>
                 
-                <div style="background: var(--dark); color: white; padding: 15px; border-radius: 10px; margin: 0 auto 20px auto; max-width: 400px; border: 2px dashed #ffd700;">
+                <div id="coupon-box" style="display:none; background: var(--dark); color: white; padding: 15px; border-radius: 10px; margin: 0 auto 20px auto; max-width: 400px; border: 2px dashed #ffd700;">
                     <p style="margin-bottom: 5px; font-size: 0.9rem; color: #ccc;">Your 50% Off Code:</p>
                     <div style="font-size: 1.5rem; font-weight: 800; letter-spacing: 2px; color: #ffd700;">LAUNCH50</div>
                     <p style="margin-top: 5px; font-size: 0.8rem; color: #ccc;">(Valid for 24 hours)</p>
@@ -346,13 +361,20 @@
                 source: "install_quiz_offer"
             })
             .then(() => {
+                // Show the Coupon Box since they "paid" with their email
+                document.getElementById('coupon-box').style.display = 'block';
                 showFinalScreen();
             })
             .catch((error) => {
                 console.error("Error writing document: ", error);
-                // If error, show screen anyway so user isn't stuck
                 showFinalScreen();
             });
+        }
+
+        function skipEmail() {
+            // They skipped, so hide the coupon box
+            document.getElementById('coupon-box').style.display = 'none';
+            showFinalScreen();
         }
 
         function showFinalScreen() {
