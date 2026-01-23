@@ -66,7 +66,8 @@
         .pin-icon { font-size: 1.5rem; }
 
         /* EMAIL GATE STYLES */
-        .email-gate { display: none; animation: fadeIn 0.4s ease; }
+        .email-gate, .pricing-explainer { display: none; animation: fadeIn 0.4s ease; }
+        
         .email-input {
             width: 100%;
             max-width: 400px;
@@ -189,6 +190,19 @@
         }
         .skip-link:hover { color: var(--dark); }
 
+        /* Comparison Table for Explainer */
+        .plan-box {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: left;
+        }
+        .plan-row { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 1.05rem; }
+        .plan-val { font-weight: 700; }
+        .highlight-text { color: var(--primary); font-weight: 700; }
+
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
@@ -248,20 +262,48 @@
                 <div class="quiz-step" id="q3">
                     <h2>What is your main goal?</h2>
                     <div class="options-grid">
-                        <div class="quiz-option" onclick="showEmailGate()">Clear my closet</div>
-                        <div class="quiz-option" onclick="showEmailGate()">Make extra cash</div>
-                        <div class="quiz-option" onclick="showEmailGate()">Boost my business</div>
+                        <div class="quiz-option" onclick="showExplainer()">Clear my closet</div>
+                        <div class="quiz-option" onclick="showExplainer()">Make extra cash</div>
+                        <div class="quiz-option" onclick="showExplainer()">Boost my business</div>
                     </div>
                 </div>
             </div>
 
+            <div id="explainer-section" class="pricing-explainer">
+                <h2>Here is how Listee works 💡</h2>
+                <p class="subtitle">We keep it simple so you can sell faster.</p>
+
+                <div class="plan-box">
+                    <div class="plan-row" style="border-bottom: 1px solid #ddd; padding-bottom: 10px; margin-bottom: 15px;">
+                        <span>Starter Plan</span>
+                        <span class="plan-val">Free Forever</span>
+                    </div>
+                    <div class="plan-row">
+                        <span>Daily Limit:</span>
+                        <span class="plan-val">5 Free Relists / Day</span>
+                    </div>
+                    <div class="plan-row">
+                        <span>Automation:</span>
+                        <span class="plan-val">Manual Click</span>
+                    </div>
+                </div>
+
+                <div style="background: #eefbfc; padding: 20px; border-radius: 12px; margin-bottom: 25px;">
+                    <h3 style="color: var(--primary); margin-bottom: 10px;">⚡ Need more power?</h3>
+                    <p style="margin-bottom: 10px;">Upgrade to <strong>Listee Pro</strong> for unlimited automation.</p>
+                    <p style="font-style: italic; font-size: 0.95rem; color: #555;">"Users report making <strong>3x more money</strong> after switching to Listee Pro." 📈</p>
+                </div>
+
+                <button class="btn-primary" onclick="showEmailGate()">Sounds Good</button>
+            </div>
+
             <div id="email-section" class="email-gate">
                 <h2>🎉 One Last Step!</h2>
-                <p class="subtitle">Want to save money and stay updated?</p>
+                <p class="subtitle">Want to save money on Pro?</p>
                 
                 <div style="background: #eefbfc; padding: 15px; border-radius: 10px; margin-bottom: 20px; border: 1px dashed var(--primary);">
                     <span style="font-size: 1.2rem;">🎁</span>
-                    <strong style="color: var(--primary);">Optional Bonus:</strong> Enter your email below to receive a <strong>50% OFF Lifetime</strong> code and important updates about new features.
+                    <strong style="color: var(--primary);">Optional Bonus:</strong> Enter your email below to receive a <strong>50% OFF Pro</strong> code and feature updates.
                 </div>
                 
                 <input type="email" id="userEmail" class="email-input" placeholder="name@example.com">
@@ -336,8 +378,13 @@
             document.getElementById('progress').style.width = width;
         }
 
-        function showEmailGate() {
+        function showExplainer() {
             document.getElementById('quiz-section').style.display = 'none';
+            document.getElementById('explainer-section').style.display = 'block';
+        }
+
+        function showEmailGate() {
+            document.getElementById('explainer-section').style.display = 'none';
             document.getElementById('email-section').style.display = 'block';
         }
 
@@ -361,7 +408,6 @@
                 source: "install_quiz_offer"
             })
             .then(() => {
-                // Show the Coupon Box since they "paid" with their email
                 document.getElementById('coupon-box').style.display = 'block';
                 showFinalScreen();
             })
@@ -372,7 +418,6 @@
         }
 
         function skipEmail() {
-            // They skipped, so hide the coupon box
             document.getElementById('coupon-box').style.display = 'none';
             showFinalScreen();
         }
