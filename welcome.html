@@ -7,7 +7,11 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600&display=swap" rel="stylesheet">
+    
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
 
     <style>
         :root {
@@ -60,6 +64,21 @@
             gap: 15px;
         }
         .pin-icon { font-size: 1.5rem; }
+
+        /* EMAIL GATE STYLES */
+        .email-gate { display: none; animation: fadeIn 0.4s ease; }
+        .email-input {
+            width: 100%;
+            max-width: 400px;
+            padding: 15px;
+            border: 2px solid #e5e7eb;
+            border-radius: 50px;
+            font-size: 1rem;
+            margin-bottom: 15px;
+            outline: none;
+            text-align: center;
+        }
+        .email-input:focus { border-color: var(--primary); }
 
         /* The Quiz Styles */
         .quiz-container { display: none; }
@@ -216,16 +235,38 @@
                 <div class="quiz-step" id="q3">
                     <h2>What is your main goal?</h2>
                     <div class="options-grid">
-                        <div class="quiz-option" onclick="showResult()">Clear my closet</div>
-                        <div class="quiz-option" onclick="showResult()">Make extra cash</div>
-                        <div class="quiz-option" onclick="showResult()">Boost my business</div>
+                        <div class="quiz-option" onclick="showEmailGate()">Clear my closet</div>
+                        <div class="quiz-option" onclick="showEmailGate()">Make extra cash</div>
+                        <div class="quiz-option" onclick="showEmailGate()">Boost my business</div>
                     </div>
                 </div>
             </div>
 
+            <div id="email-section" class="email-gate">
+                <h2>🎉 One Last Step!</h2>
+                <p class="subtitle">Enter your email to unlock your <strong>5 Free Relists</strong>.</p>
+                
+                <div style="background: #eefbfc; padding: 15px; border-radius: 10px; margin-bottom: 20px; border: 1px dashed var(--primary);">
+                    <span style="font-size: 1.2rem;">🎁</span>
+                    <strong style="color: var(--primary);">Bonus:</strong> We will also send you a secret <strong>50% OFF Lifetime</strong> code.
+                </div>
+                
+                <input type="email" id="userEmail" class="email-input" placeholder="name@example.com">
+                <br>
+                <button class="btn-primary" onclick="submitEmail()">Unlock My Credits & Discount</button>
+                <p style="font-size: 0.8rem; color: #999; margin-top: 15px;">We hate spam as much as you do.</p>
+            </div>
+
             <div id="result-section" class="success-screen">
-                <h2>Your Strategy is Ready ⚡</h2>
-                <p class="subtitle">Based on your answers, we recommend <strong>Relisting 5 items today</strong> to trigger the algorithm.</p>
+                <h2>You are all set! ⚡</h2>
+                
+                <div style="background: var(--dark); color: white; padding: 15px; border-radius: 10px; margin: 0 auto 20px auto; max-width: 400px; border: 2px dashed #ffd700;">
+                    <p style="margin-bottom: 5px; font-size: 0.9rem; color: #ccc;">Your 50% Off Code:</p>
+                    <div style="font-size: 1.5rem; font-weight: 800; letter-spacing: 2px; color: #ffd700;">LAUNCH50</div>
+                    <p style="margin-top: 5px; font-size: 0.8rem; color: #ccc;">(Valid for 24 hours)</p>
+                </div>
+                
+                <p class="subtitle">We recommend <strong>Relisting 5 items today</strong> to trigger the algorithm.</p>
                 
                 <div class="safety-box">
                     <div class="safety-icon">🛡️</div>
@@ -252,30 +293,75 @@
     </div>
 
     <script>
+        // --- 1. FIREBASE CONFIG ---
+        const firebaseConfig = {
+            apiKey: "AIzaSyD2oLRt8kx1o1MGH8El8B8KtZs6Ee-C_9U",
+            authDomain: "listee-483816.firebaseapp.com",
+            projectId: "listee-483816",
+            storageBucket: "listee-483816.firebasestorage.app",
+            messagingSenderId: "753908564638",
+            appId: "1:753908564638:web:fe7f0610e637270e95f18f"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        // --- 2. QUIZ LOGIC ---
         function startQuiz() {
             document.getElementById('intro-section').style.display = 'none';
             document.getElementById('quiz-section').style.display = 'block';
         }
 
         function nextStep(stepNumber) {
-            // Hide all steps
             document.querySelectorAll('.quiz-step').forEach(el => el.classList.remove('active'));
-            
-            // Show current step
             document.getElementById('q' + stepNumber).classList.add('active');
             
-            // Update Progress Bar
             let width = '33%';
             if(stepNumber === 2) width = '66%';
             if(stepNumber === 3) width = '100%';
             document.getElementById('progress').style.width = width;
         }
 
-        function showResult() {
+        function showEmailGate() {
             document.getElementById('quiz-section').style.display = 'none';
+            document.getElementById('email-section').style.display = 'block';
+        }
+
+        // --- 3. SAVE EMAIL & SHOW SUCCESS ---
+        function submitEmail() {
+            const email = document.getElementById('userEmail').value;
+            // Simple validation
+            if(email.length < 5 || !email.includes('@')) {
+                alert("Please enter a valid email address.");
+                return;
+            }
+
+            const btn = document.querySelector('#email-section button');
+            btn.innerHTML = "Unlocking...";
+            btn.disabled = true;
+
+            // Save to 'leads' collection
+            db.collection("leads").add({
+                email: email,
+                timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                source: "install_quiz_offer"
+            })
+            .then(() => {
+                showFinalScreen();
+            })
+            .catch((error) => {
+                console.error("Error writing document: ", error);
+                // If error, show screen anyway so user isn't stuck
+                showFinalScreen();
+            });
+        }
+
+        function showFinalScreen() {
+            document.getElementById('email-section').style.display = 'none';
             document.getElementById('result-section').style.display = 'block';
-            
-            // TRIGGER CONFETTI 🎉
+            triggerConfetti();
+        }
+
+        function triggerConfetti() {
             var duration = 3 * 1000;
             var animationEnd = Date.now() + duration;
             var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
@@ -286,13 +372,8 @@
 
             var interval = setInterval(function() {
               var timeLeft = animationEnd - Date.now();
-
-              if (timeLeft <= 0) {
-                return clearInterval(interval);
-              }
-
+              if (timeLeft <= 0) return clearInterval(interval);
               var particleCount = 50 * (timeLeft / duration);
-              // since particles fall down, start a bit higher than random
               confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } }));
               confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } }));
             }, 250);
